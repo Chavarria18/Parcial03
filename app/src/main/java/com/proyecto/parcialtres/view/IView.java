@@ -1,13 +1,14 @@
 package com.proyecto.parcialtres.view;
 
 import com.proyecto.parcialtres.bean.Movie;
+import com.proyecto.parcialtres.bean.MovieIndividual;
 
 import java.util.List;
 
 public interface IView {
 
-    public void getMovies();
-    public List<Movie> OnSuccesMovies();
-    public String OnErrorMovie();
+
+    void onSucces(List<MovieIndividual> movies);
+    void onError(String msg);
 
 }

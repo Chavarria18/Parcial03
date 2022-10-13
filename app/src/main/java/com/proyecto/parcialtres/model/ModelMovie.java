@@ -3,6 +3,7 @@ package com.proyecto.parcialtres.model;
 import com.proyecto.parcialtres.api.MovieApi;
 import com.proyecto.parcialtres.api.RetrofitClient;
 import com.proyecto.parcialtres.bean.Movie;
+import com.proyecto.parcialtres.bean.MovieIndividual;
 import com.proyecto.parcialtres.presenter.IPresenterMovie;
 import com.proyecto.parcialtres.presenter.PresenterMovie;
 
@@ -16,25 +17,25 @@ public class ModelMovie implements IModelMovie{
     MovieApi api;
     IPresenterMovie presenter;
 
-    public ModelMovie(MovieApi api) {
+    public ModelMovie(IPresenterMovie presenter) {
         this.api = RetrofitClient.getInstance().create(MovieApi.class);
-        this.presenter = PresenterMovie(this);
+        this.presenter =  presenter;
     }
 
     @Override
     public void getMovies() {
 
-        Call<List<Movie>> movieCall = api.getBooks();
-
-
-        movieCall.enqueue(new Callback<List<Movie>>() {
+        Call<Movie> movieCall = api.getBooks();
+        movieCall.enqueue(new Callback<Movie>() {
             @Override
-            public void onResponse(Call<List<Movie>> call, Response<List<Movie>> response) {
-                presenter.onSucces(response.body());
+            public void onResponse(Call<Movie> call, Response<Movie> response) {
+                System.out.println(response.body());
+                Movie peliculas = response.body() ;
+                System.out.println(peliculas.mMovies);
+                presenter.onSucces(response.body().mMovies);
             }
-
             @Override
-            public void onFailure(Call<List<Movie>> call, Throwable t) {
+            public void onFailure(Call<Movie> call, Throwable t) {
                 presenter.onError("Error el obtener los libros");
             }
         });
